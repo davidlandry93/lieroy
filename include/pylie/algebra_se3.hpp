@@ -4,8 +4,8 @@
 #include <chrono>
 #include <random>
 
-#include "algebra_se3.h"
-#include "normal_random_variable.hpp"
+#include "pylie/algebra_se3.h"
+#include "pylie/normal_random_variable.hpp"
 
 namespace pylie {
   template <class T>

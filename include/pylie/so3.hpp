@@ -6,7 +6,7 @@
 #include <Eigen/Geometry>
 #include <Eigen/Eigenvalues>
 
-#include "so3.h"
+#include "pylie/so3.h"
 
 namespace pylie {
     template <class T>

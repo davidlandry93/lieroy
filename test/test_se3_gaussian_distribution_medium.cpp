@@ -2,9 +2,9 @@
 
 #include <gtest/gtest.h>
 
-#include "normal_random_variable.hpp"
-#include "se3.hpp"
-#include "se3_gaussian_distribution.hpp"
+#include "pylie/normal_random_variable.hpp"
+#include "pylie/se3.hpp"
+#include "pylie/se3_gaussian_distribution.hpp"
 
 using namespace pylie;
 

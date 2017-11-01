@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "se3.hpp"
+#include "pylie/se3.hpp"
 
 namespace pylie {
   template<typename T>

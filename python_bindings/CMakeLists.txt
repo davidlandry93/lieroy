@@ -21,11 +21,9 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/include
   ${CMAKE_SOURCE_DIR}/src)
 
-message(STATUS "CURRENT DIR ${CMAKE_SOURCE_DIR}")
-message(STATUS "CURRENT SOURCE DIR ${CMAKE_CURRENT_SOURCE_DIR}")
-
-add_library(pylie SHARED pylie.cpp)
-target_link_libraries(pylie ${Boost_LIBRARIES})
-set_target_properties(pylie PROPERTIES
+add_library(pylie_bindings SHARED pylie.cpp)
+target_link_libraries(pylie_bindings pylie ${Boost_LIBRARIES})
+set_target_properties(pylie_bindings PROPERTIES
   LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+  OUTPUT_NAME "pylie"
   PREFIX "")

@@ -6,9 +6,9 @@
 #include <random>
 #include <stdexcept>
 
-#include "algebra_so3.hpp"
-#include "normal_random_variable.hpp"
-#include "se3.h"
+#include "pylie/algebra_so3.hpp"
+#include "pylie/normal_random_variable.hpp"
+#include "pylie/se3.h"
 
 namespace pylie {
     template <class T>

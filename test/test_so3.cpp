@@ -4,7 +4,7 @@
 #include <Eigen/Core>
 #include <gtest/gtest.h>
 
-#include "so3.hpp"
+#include "pylie/so3.hpp"
 
 namespace pylie {
 

@@ -4,8 +4,8 @@
 #include <Eigen/Core>
 #include <gtest/gtest.h>
 
-#include "se3.hpp"
-#include "se3_gaussian_distribution.hpp"
+#include "pylie/se3.hpp"
+#include "pylie/se3_gaussian_distribution.hpp"
 
 using namespace pylie;
 using namespace std;

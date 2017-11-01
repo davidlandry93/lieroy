@@ -6,8 +6,8 @@
 #include <boost/python/numpy.hpp>
 #include <Eigen/Core>
 
-#include "algebra_se3.hpp"
-#include "se3.hpp"
+#include "pylie/algebra_se3.hpp"
+#include "pylie/se3.hpp"
 
 namespace p = boost::python;
 namespace np = boost::python::numpy;

@@ -5,7 +5,7 @@
 
 #include <Eigen/Core>
 
-#include "algebra_so3.h"
+#include "pylie/algebra_so3.h"
 
 namespace pylie {
   template<class T>

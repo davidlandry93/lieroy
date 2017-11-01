@@ -2,8 +2,8 @@
 #include <cmath>
 #include <gtest/gtest.h>
 
-#include "algebra_so3.hpp"
-#include "so3.hpp"
+#include "pylie/algebra_so3.hpp"
+#include "pylie/so3.hpp"
 
 using namespace pylie;
 

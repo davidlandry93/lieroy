@@ -9,11 +9,11 @@ set(SHORT_TESTS
   test_so3.cpp
   test_se3_gaussian_distribution.cpp)
 add_executable(short_tests test_main.cpp ${SHORT_TESTS})
-target_link_libraries(short_tests ${GTEST_BOTH_LIBRARIES} pthread)
+target_link_libraries(short_tests ${GTEST_BOTH_LIBRARIES} pthread pylie)
 
 set(MEDIUM_TESTS
   test_se3_medium.cpp
   test_so3_medium.cpp
   test_se3_gaussian_distribution_medium.cpp)
 add_executable(medium_tests test_main.cpp ${MEDIUM_TESTS})
-target_link_libraries(medium_tests ${GTEST_BOTH_LIBRARIES} pthread)
+target_link_libraries(medium_tests ${GTEST_BOTH_LIBRARIES} pthread pylie)

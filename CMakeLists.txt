@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.8)
 
 project(pylie)
 set(pylie_VERSION_MAJOR 0)
@@ -9,11 +9,14 @@ find_package(Eigen3 REQUIRED)
 option(BUILD_PYTHON_BINDINGS "Build Python bindings" ON)
 option(BUILD_TESTS "Build tests" ON)
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-include_directories(
-  ${CMAKE_CURRENT_SOURCE_DIR}/src)
+add_library(pylie INTERFACE)
+target_include_directories(pylie INTERFACE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+  ${EIGEN3_INCLUDE_DIR})
+# Even though it is header only, pylie still requires the consumer to use a c++11 compiler.
+target_compile_features(pylie INTERFACE cxx_std_11)
 
 if(BUILD_PYTHON_BINDINGS)
   add_subdirectory(python_bindings)
@@ -23,14 +26,29 @@ if(BUILD_TESTS)
   add_subdirectory(test)
 endif(BUILD_TESTS)
 
-add_library(pylie INTERFACE)
-target_include_directories(pylie INTERFACE ${EIGEN3_INCLUDE_DIR})
 
-install(DIRECTORY src/
-  DESTINATION include/${CMAKE_PROJECT_NAME}
+# === INSTALLATION ===
+include(CMakePackageConfigHelpers)
+set(PYLIE_INSTALL_DIR lib/pylie)
+
+# Generate the pylie-config file which makes pylie available to find_package commands.
+configure_package_config_file(pylie-config.cmake.in ${CMAKE_BINARY_DIR}/pylie-config.cmake
+  INSTALL_DESTINATION ${PYLIE_INSTALL_DIR}/cmake)
+
+# Install the header files of the library.
+install(DIRECTORY include/pylie
+  DESTINATION include/pylie
   FILES_MATCHING REGEX ".h$|.hpp$")
 
-install(EXPORT ${CMAKE_PROJECT_NAME}
-  DESTINATION lib/${CMAKE_PROJECT_NAME}
-  NAMESPACE pylie
-  )
+# Define pylie_export as the export for target pylie.
+install(TARGETS pylie
+  EXPORT pylie-targets)
+
+# Install an export file which allows consumers to use the target pylie::pylie in their project.
+install(EXPORT pylie-targets
+  NAMESPACE pylie::
+  DESTINATION ${PYLIE_INSTALL_DIR}/cmake)
+
+# Installe the auto generated files to make the targets available through find_package.
+install(FILES ${CMAKE_BINARY_DIR}/pylie-config.cmake
+  DESTINATION ${PYLIE_INSTALL_DIR}/cmake)

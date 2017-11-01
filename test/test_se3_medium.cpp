@@ -3,7 +3,7 @@
 
 #include <gtest/gtest.h>
 
-#include "se3.hpp"
+#include "pylie/se3.hpp"
 
 using namespace pylie;
 

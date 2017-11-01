@@ -3,8 +3,8 @@
 
 #include <Eigen/Core>
 
-#include "se3.hpp"
-#include "se3_distribution.h"
+#include "pylie/se3.hpp"
+#include "pylie/se3_distribution.h"
 
 namespace pylie {
 template <typename T>
