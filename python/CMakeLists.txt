@@ -35,10 +35,10 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in ${SETUP_FILE})
 
 # === INSTALLATION ===
 
-find_program(PYTHON "python")
+find_program(PIP "pip")
 
-if(PYTHON)
-  set(PYTHON_BINDINGS_INSTALLATION_COMMAND  ${PYTHON} ${SETUP_FILE} install)
+if(PIP)
+  set(PYTHON_BINDINGS_INSTALLATION_COMMAND  ${PIP} install -I .)
 
   # Install the package at install time.
   install(CODE "execute_process(COMMAND ${PYTHON_BINDINGS_INSTALLATION_COMMAND} WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})")

@@ -4,10 +4,12 @@
 #include <boost/format.hpp>
 #include <boost/python.hpp>
 #include <boost/python/numpy.hpp>
+#include <boost/python/tuple.hpp>
 #include <Eigen/Core>
 
 #include "pylie/algebra_se3.hpp"
 #include "pylie/se3.hpp"
+#include "pylie/se3_gaussian_distribution.hpp"
 
 namespace p = boost::python;
 namespace np = boost::python::numpy;
@@ -96,6 +98,31 @@ np::ndarray se3_exp(const np::ndarray& m) {
   return eigen_matrix_to_ndarray<T,4,4>(log_of_lie.exp().as_matrix());
 }
 
+template <typename T>
+p::tuple se3_gaussian_distribution_of_sample(const np::ndarray& m) {
+  if(m.get_nd() != 3 || m.shape(1) != 4 || m.shape(2) != 4) {
+    throw std::runtime_error("Input has wrong shape");
+  }
+
+  std::vector<pylie::SE3<double>> transformations;
+  for(auto i = 0; i < m.shape(0); ++i) {
+    Eigen::Matrix<T,4,4> eigen_m;
+
+    for(auto j = 0; j < m.shape(1); ++j) {
+      for(auto k = 0; k < m.shape(2); ++k) {
+        eigen_m(j,k) = p::extract<T>(m[i][j][k]);
+      }
+    }
+
+    transformations.push_back(pylie::SE3<double>(eigen_m));
+    std::cout << eigen_m << '\n';
+  }
+
+  auto distribution = pylie::SE3GaussianDistribution<double>::from_sample(transformations);
+
+  return p::make_tuple(eigen_matrix_to_ndarray<T,4,4>(distribution.mean.as_matrix()), eigen_matrix_to_ndarray(distribution.covariance));
+}
+
 BOOST_PYTHON_MODULE(pylie) {
   np::initialize();
 
@@ -103,4 +130,5 @@ BOOST_PYTHON_MODULE(pylie) {
   p::def("se3_log", se3_log<float>, "Compute the Lie algebra counterpart of a SE3 member. Takes a 4x4 Numpy matrix as input.");
   p::def("se3_exp", se3_exp<double>, "Compute the Lie Group counterpart of a member of the Lie algebra of SE3. Takes a 6-vector as input.");
   p::def("se3_exp", se3_exp<float>,  "Compute the Lie Group counterpart of a member of the Lie algebra of SE3. Takes a 6-vector as input.");
+  p::def("se3_gaussian_distribution_of_sample", se3_gaussian_distribution_of_sample<double>, "Compute a gaussian distribution from a collection of SE3 transforms");
 }
