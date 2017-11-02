@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 
 option(USE_PYTHON3 "Wether to use Python 3 instead of Python 2" ON)
+option(AUTO_INSTALL_BINDINGS "Install the python package of the bindings at install time" OFF)
 
 if(USE_PYTHON3)
   set(PYTHON_COMPONENTS_SUFFIX 3)
@@ -20,28 +21,36 @@ target_include_directories(pylie_bindings PRIVATE
   ${PYTHON_INCLUDE_DIRS})
 target_link_libraries(pylie_bindings pylie ${Boost_LIBRARIES})
 set_target_properties(pylie_bindings PROPERTIES
-  LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/pylie
+  LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/pylie
   OUTPUT_NAME ${PYLIE_BINDINGS_OUTPUT_NAME}
   PREFIX ""
   SUFFIX ".so")
+
+add_custom_command(TARGET pylie_bindings PRE_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy
+  ${CMAKE_CURRENT_SOURCE_DIR}/pylie/__init__.py
+  ${CMAKE_CURRENT_BINARY_DIR}/pylie/__init__.py)
+
+set(SETUP_FILE ${CMAKE_CURRENT_BINARY_DIR}/setup.py)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in ${SETUP_FILE})
 
 # === INSTALLATION ===
 
 find_program(PYTHON "python")
 
 if(PYTHON)
-  # Placeholder file to remember every time we built the python package.
-  set(PACKAGE_WAS_BUILT_FILE ${CMAKE_BINARY_DIR}/timestamp)
-  set(SETUP_FILE ${CMAKE_CURRENT_SOURCE_DIR}/setup.py)
+  # Install the package at install time.
+  # message(STATUS ${PYTHON_BINDINGS_INSTALLATION_COMMAND})
+  set(PYTHON_BINDINGS_INSTALLATION_COMMAND  ${PYTHON} ${SETUP_FILE} install)
+  install(CODE "execute_process(COMMAND ${PYTHON_BINDINGS_INSTALLATION_COMMAND} WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})")
 
-  # Generate a setup.py file from template.
-  get_target_property(PYLIE_INCLUDE_DIRS pylie INTERFACE_INCLUDE_DIRECTORIES)
-  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in ${SETUP_FILE})
+  if(AUTO_INSTALL_BINDINGS)
+    message(STATUS "Auto install bindings is ON")
 
-  # Add a custom command that builds the package.
-  add_custom_command(OUTPUT ${PACKAGE_WAS_BUILT_FILE}
-    COMMAND ${PYTHON} ${SETUP_FILE} build
-    COMMAND ${CMAKE_COMMAND} -E touch ${PACKAGE_WAS_BUILT_FILE})
-
-  install(CODE "execute_process(COMMAND ${PYTHON} ${SETUP_FILE} install)")
+    # Add a custom command that installs the package every time the bindings a rebuilt.
+    add_custom_command(TARGET pylie_bindings POST_BUILD
+      COMMAND ${PYTHON_BINDINGS_INSTALLATION_COMMAND}
+      WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+  endif(AUTO_INSTALL_BINDINGS)
 endif(PYTHON)
+

@@ -1,4 +1,4 @@
-from distutils.core import setup, Extension
+from setuptools import setup
 
 setup(name='pylie',
       version='${pylie_VERSION}',
@@ -6,6 +6,7 @@ setup(name='pylie',
       author='David Landry',
       author_email='davidlandry93@gmail.com',
       install_requires=['numpy'],
+      python_requires='>=3.0',
       url='https://github.com/davidlandry93/pylie',
       packages=['pylie'],
       package_dir={'pylie': 'pylie'},

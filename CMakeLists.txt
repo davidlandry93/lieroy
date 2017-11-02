@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.8)
 
-project(pylie)
-set(pylie_VERSION_MAJOR 0)
-set(pylie_VERSION_MINOR 1)
+project(pylie VERSION 0.1)
 
 find_package(Eigen3 REQUIRED)
 
@@ -13,13 +11,13 @@ option(BUILD_TESTS "Build tests" ON)
 add_library(pylie INTERFACE)
 target_include_directories(pylie INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
   ${EIGEN3_INCLUDE_DIR})
 # Even though it is header only, pylie still requires the consumer to use a c++11 compiler.
 target_compile_features(pylie INTERFACE cxx_std_11)
 
 if(BUILD_PYTHON_BINDINGS)
-  add_subdirectory(python_bindings)
+  add_subdirectory(python)
 endif(BUILD_PYTHON_BINDINGS)
 
 if(BUILD_TESTS)
