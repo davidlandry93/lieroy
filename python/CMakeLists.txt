@@ -13,7 +13,6 @@ find_package(Boost 1.63 COMPONENTS python${PYTHON_COMPONENTS_SUFFIX} numpy${PYTH
 find_package(Eigen3 REQUIRED)
 find_package(PythonLibs)
 
-set(PYLIE_BINDINGS_OUTPUT_NAME "pylie")
 add_library(pylie_bindings SHARED pylie/pylie.cpp)
 target_include_directories(pylie_bindings PRIVATE
   ${Boost_INCLUDE_DIRS}
@@ -22,7 +21,7 @@ target_include_directories(pylie_bindings PRIVATE
 target_link_libraries(pylie_bindings pylie ${Boost_LIBRARIES})
 set_target_properties(pylie_bindings PROPERTIES
   LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/pylie
-  OUTPUT_NAME ${PYLIE_BINDINGS_OUTPUT_NAME}
+  OUTPUT_NAME "pylie"
   PREFIX ""
   SUFFIX ".so")
 
@@ -39,9 +38,9 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in ${SETUP_FILE})
 find_program(PYTHON "python")
 
 if(PYTHON)
-  # Install the package at install time.
-  # message(STATUS ${PYTHON_BINDINGS_INSTALLATION_COMMAND})
   set(PYTHON_BINDINGS_INSTALLATION_COMMAND  ${PYTHON} ${SETUP_FILE} install)
+
+  # Install the package at install time.
   install(CODE "execute_process(COMMAND ${PYTHON_BINDINGS_INSTALLATION_COMMAND} WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})")
 
   if(AUTO_INSTALL_BINDINGS)

@@ -16,6 +16,10 @@ target_include_directories(pylie INTERFACE
 # Even though it is header only, pylie still requires the consumer to use a c++11 compiler.
 target_compile_features(pylie INTERFACE cxx_std_11)
 
+
+add_executable(distribution_of_se3 src/distribution_of_se3.cpp)
+target_link_libraries(distribution_of_se3 pylie)
+
 if(BUILD_PYTHON_BINDINGS)
   add_subdirectory(python)
 endif(BUILD_PYTHON_BINDINGS)
@@ -33,14 +37,17 @@ set(PYLIE_INSTALL_DIR lib/pylie)
 configure_package_config_file(pylie-config.cmake.in ${CMAKE_BINARY_DIR}/pylie-config.cmake
   INSTALL_DESTINATION ${PYLIE_INSTALL_DIR}/cmake)
 
+# Install the executables.
+
 # Install the header files of the library.
 install(DIRECTORY include/pylie
   DESTINATION include/pylie
   FILES_MATCHING REGEX ".h$|.hpp$")
 
 # Define pylie_export as the export for target pylie.
-install(TARGETS pylie
-  EXPORT pylie-targets)
+install(TARGETS pylie distribution_of_se3
+  EXPORT pylie-targets
+  RUNTIME DESTINATION bin)
 
 # Install an export file which allows consumers to use the target pylie::pylie in their project.
 install(EXPORT pylie-targets
