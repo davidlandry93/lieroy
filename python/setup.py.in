@@ -1,0 +1,12 @@
+from distutils.core import setup, Extension
+
+setup(name='pylie',
+      version='${pylie_VERSION}',
+      description='Lie algebra transformations for SE(3) and SO(3) transformations.',
+      author='David Landry',
+      author_email='davidlandry93@gmail.com',
+      install_requires=['numpy'],
+      url='https://github.com/davidlandry93/pylie',
+      packages=['pylie'],
+      package_dir={'pylie': 'pylie'},
+      package_data={'pylie': ['pylie.so']})
