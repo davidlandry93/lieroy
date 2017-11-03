@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.8)
 project(pylie VERSION 0.1)
 
 find_package(Eigen3 REQUIRED)
+find_package(OpenMP)
 
 option(BUILD_PYTHON_BINDINGS "Build Python bindings" ON)
 option(BUILD_TESTS "Build tests" ON)
@@ -15,6 +16,12 @@ target_include_directories(pylie INTERFACE
   ${EIGEN3_INCLUDE_DIR})
 # Even though it is header only, pylie still requires the consumer to use a c++11 compiler.
 target_compile_features(pylie INTERFACE cxx_std_11)
+
+if(OpenMP_FOUND)
+  message(STATUS ${OpenMP_CXX_FLAGS})
+  target_compile_options(pylie INTERFACE ${OpenMP_CXX_FLAGS})
+  target_link_libraries(pylie INTERFACE ${OpenMP_CXX_FLAGS})
+endif(OpenMP_FOUND)
 
 
 add_executable(distribution_of_se3 src/distribution_of_se3.cpp)

@@ -1,6 +1,8 @@
 #ifndef PYLIE_SE3_GAUSSIAN_DISTRIBUTION_HPP
 #define PYLIE_SE3_GAUSSIAN_DISTRIBUTION_HPP
 
+#include <limits>
+
 #include "normal_random_variable.hpp"
 #include "se3_gaussian_distribution.h"
 
@@ -50,16 +52,25 @@ SE3GaussianDistribution<T> SE3GaussianDistribution<T>::from_sample(
 
   SE3<T> mean_transformation = sample[0];       // The average of the samples.
   Eigen::Matrix<T, 6, 1> average_perturbation;  // The average perturbation.
+  Eigen::Matrix<T, 6, 1> previous_average_perturbation;
   Eigen::Matrix<T, 6, 6> covariance;
 
   // TODO: Replace n_iterations by a real convergence checker.
   int n_iterations = 0;
-  while (n_iterations < 5) {
+  auto inf = std::numeric_limits<T>::infinity();
+  previous_average_perturbation << inf, inf, inf, inf, inf, inf;
+  bool converged = false;
+
+  while (n_iterations < 8 and
+         !converged) {
     average_perturbation.setZero();
     covariance.setZero();
 
+    auto inv_of_mean = mean_transformation.inv();
+
+#pragma omp parallel for schedule(dynamic, 32)
     for (auto i = 0; i < sample.size(); i++) {
-      SE3<T> product = sample[i] * mean_transformation.inv();
+      SE3<T> product = sample[i] * inv_of_mean;
 
       AlgebraSE3<T> delta = product.log();
       auto vector = delta.as_vector();
@@ -78,6 +89,9 @@ SE3GaussianDistribution<T> SE3GaussianDistribution<T>::from_sample(
     mean_transformation = perturbation * mean_transformation;
 
     ++n_iterations;
+    auto delta = (previous_average_perturbation - average_perturbation).norm();
+    converged = delta < 1e-5;
+    previous_average_perturbation = average_perturbation;
   }
 
   return SE3GaussianDistribution<T>(mean_transformation, covariance);

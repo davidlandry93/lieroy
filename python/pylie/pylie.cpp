@@ -115,12 +115,12 @@ p::tuple se3_gaussian_distribution_of_sample(const np::ndarray& m) {
     }
 
     transformations.push_back(pylie::SE3<double>(eigen_m));
-    std::cout << eigen_m << '\n';
   }
 
   auto distribution = pylie::SE3GaussianDistribution<double>::from_sample(transformations);
 
-  return p::make_tuple(eigen_matrix_to_ndarray<T,4,4>(distribution.mean.as_matrix()), eigen_matrix_to_ndarray(distribution.covariance));
+  return p::make_tuple(eigen_matrix_to_ndarray<T,4,4>(distribution.mean.as_matrix()),
+                       eigen_matrix_to_ndarray(distribution.covariance));
 }
 
 BOOST_PYTHON_MODULE(pylie) {
