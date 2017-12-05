@@ -48,7 +48,7 @@ configure_package_config_file(pylie-config.cmake.in ${CMAKE_BINARY_DIR}/pylie-co
 
 # Install the header files of the library.
 install(DIRECTORY include/pylie
-  DESTINATION include/pylie
+  DESTINATION include
   FILES_MATCHING REGEX ".h$|.hpp$")
 
 # Define pylie_export as the export for target pylie.
