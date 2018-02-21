@@ -4,11 +4,11 @@
 #include <Eigen/Core>
 #include <gtest/gtest.h>
 
-#include "pylie/normal_random_variable.hpp"
-#include "pylie/se3.hpp"
-#include "pylie/se3_gaussian_distribution.hpp"
+#include "lieroy/normal_random_variable.hpp"
+#include "lieroy/se3.hpp"
+#include "lieroy/se3_gaussian_distribution.hpp"
 
-using namespace pylie;
+using namespace lieroy;
 
 TEST(SE3, LogMapZeroAngleTest) {
     Eigen::Matrix<float,4,4> m;

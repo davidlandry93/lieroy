@@ -4,10 +4,10 @@
 #include <Eigen/Core>
 #include <gtest/gtest.h>
 
-#include "pylie/se3.hpp"
-#include "pylie/se3_gaussian_distribution.hpp"
+#include "lieroy/se3.hpp"
+#include "lieroy/se3_gaussian_distribution.hpp"
 
-using namespace pylie;
+using namespace lieroy;
 using namespace std;
 
 TEST(SE3GaussianDistribution, SamplingAlongTranslation) {

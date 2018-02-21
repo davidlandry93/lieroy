@@ -1,16 +1,16 @@
-#ifndef PYLIE_SE3_HPP
-#define PYLIE_SE3_HPP
+#ifndef LIEROY_SE3_HPP
+#define LIEROY_SE3_HPP
 
 #include <algorithm>
 #include <iomanip>
 #include <random>
 #include <stdexcept>
 
-#include "pylie/algebra_so3.hpp"
-#include "pylie/normal_random_variable.hpp"
-#include "pylie/se3.h"
+#include "lieroy/algebra_so3.hpp"
+#include "lieroy/normal_random_variable.hpp"
+#include "lieroy/se3.h"
 
-namespace pylie {
+namespace lieroy {
     template <class T>
     SE3<T>::SE3() :
         matrix(){

@@ -1,11 +1,11 @@
-#ifndef PYLIE_ALGEBRA_SO3_H
-#define PYLIE_ALGEBRA_SO3_H
+#ifndef LIEROY_ALGEBRA_SO3_H
+#define LIEROY_ALGEBRA_SO3_H
 
 #include <array>
 
 #include <Eigen/Core>
 
-namespace pylie {
+namespace lieroy {
     template <class T>
     class SO3;
 

@@ -1,12 +1,12 @@
-#ifndef PYLIE_SE3_GAUSSIAN_DISTRIBUTION_HPP
-#define PYLIE_SE3_GAUSSIAN_DISTRIBUTION_HPP
+#ifndef LIEROY_SE3_GAUSSIAN_DISTRIBUTION_HPP
+#define LIEROY_SE3_GAUSSIAN_DISTRIBUTION_HPP
 
 #include <limits>
 
 #include "normal_random_variable.hpp"
 #include "se3_gaussian_distribution.h"
 
-namespace pylie {
+namespace lieroy {
 template <typename T>
 SE3GaussianDistribution<T>::SE3GaussianDistribution()
     : mean(SE3<T>::identity()), covariance(Eigen::Matrix<T, 6, 6>::Identity()) {}

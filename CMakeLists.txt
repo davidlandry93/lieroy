@@ -18,7 +18,6 @@ target_include_directories(lieroy INTERFACE
 target_compile_features(lieroy INTERFACE cxx_std_11)
 
 if(OpenMP_FOUND)
-  message(STATUS ${OpenMP_CXX_FLAGS})
   target_compile_options(lieroy INTERFACE ${OpenMP_CXX_FLAGS})
   target_link_libraries(lieroy INTERFACE ${OpenMP_CXX_FLAGS})
 endif(OpenMP_FOUND)

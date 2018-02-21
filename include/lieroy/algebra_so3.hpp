@@ -1,9 +1,9 @@
-#ifndef PYLIE_ALGEBRA_SO3_HPP
-#define PYLIE_ALGEBRA_SO3_HPP
+#ifndef LIEROY_ALGEBRA_SO3_HPP
+#define LIEROY_ALGEBRA_SO3_HPP
 
 #include "algebra_so3.h"
 
-namespace pylie {
+namespace lieroy {
     template <class T>
     Eigen::Matrix<T,3,3> skew_symetric_matrix(const Eigen::Matrix<T,3,1>& vector) {
         Eigen::Matrix<T,3,3> m;

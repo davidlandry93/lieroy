@@ -1,13 +1,13 @@
-#ifndef PYLIE_ALGEBRA_SE3_H
-#define PYLIE_ALGEBRA_SE3_H
+#ifndef LIEROY_ALGEBRA_SE3_H
+#define LIEROY_ALGEBRA_SE3_H
 
 #include <array>
 
 #include <Eigen/Core>
 
-#include "pylie/algebra_so3.h"
+#include "lieroy/algebra_so3.h"
 
-namespace pylie {
+namespace lieroy {
   template<class T>
   class SE3;
 

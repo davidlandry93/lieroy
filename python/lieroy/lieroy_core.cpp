@@ -7,9 +7,9 @@
 #include <boost/python/tuple.hpp>
 #include <Eigen/Core>
 
-#include "pylie/algebra_se3.hpp"
-#include "pylie/se3.hpp"
-#include "pylie/se3_gaussian_distribution.hpp"
+#include "lieroy/algebra_se3.hpp"
+#include "lieroy/se3.hpp"
+#include "lieroy/se3_gaussian_distribution.hpp"
 
 namespace p = boost::python;
 namespace np = boost::python::numpy;
@@ -75,7 +75,7 @@ np::ndarray se3_log(const np::ndarray& m) {
   }
 
   Eigen::Matrix<T,4,4> eigen_m = ndarray_to_eigen_matrix<T,4,4>(m);
-  pylie::AlgebraSE3<T> log_of_lie = pylie::SE3<T>(eigen_m).log();
+  lieroy::AlgebraSE3<T> log_of_lie = lieroy::SE3<T>(eigen_m).log();
 
   return eigen_vector_to_array<T,6>(log_of_lie.as_vector());
 }
@@ -94,7 +94,7 @@ np::ndarray se3_exp(const np::ndarray& m) {
     throw std::runtime_error("Input has wrong shape");
   }
 
-  pylie::AlgebraSE3<T> log_of_lie(eigen_m);
+  lieroy::AlgebraSE3<T> log_of_lie(eigen_m);
   return eigen_matrix_to_ndarray<T,4,4>(log_of_lie.exp().as_matrix());
 }
 
@@ -104,7 +104,7 @@ p::tuple se3_gaussian_distribution_of_sample(const np::ndarray& m) {
     throw std::runtime_error("Input has wrong shape");
   }
 
-  std::vector<pylie::SE3<double>> transformations;
+  std::vector<lieroy::SE3<double>> transformations;
   for(auto i = 0; i < m.shape(0); ++i) {
     Eigen::Matrix<T,4,4> eigen_m;
 
@@ -114,16 +114,16 @@ p::tuple se3_gaussian_distribution_of_sample(const np::ndarray& m) {
       }
     }
 
-    transformations.push_back(pylie::SE3<double>(eigen_m));
+    transformations.push_back(lieroy::SE3<double>(eigen_m));
   }
 
-  auto distribution = pylie::SE3GaussianDistribution<double>::from_sample(transformations);
+  auto distribution = lieroy::SE3GaussianDistribution<double>::from_sample(transformations);
 
   return p::make_tuple(eigen_matrix_to_ndarray<T,4,4>(distribution.mean.as_matrix()),
                        eigen_matrix_to_ndarray(distribution.covariance));
 }
 
-BOOST_PYTHON_MODULE(pylie_core) {
+BOOST_PYTHON_MODULE(lieroy_core) {
   np::initialize();
 
   p::def("se3_log", se3_log<double>, "Compute the Lie algebra counterpart of a SE3 member. Takes a 4x4 Numpy matrix as input.");

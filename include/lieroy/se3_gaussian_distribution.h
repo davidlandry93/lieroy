@@ -1,12 +1,12 @@
-#ifndef PYLIE_SE3_GAUSSIAN_DISTRIBUTION_H
-#define PYLIE_SE3_GAUSSIAN_DISTRIBUTION_H
+#ifndef LIEROY_SE3_GAUSSIAN_DISTRIBUTION_H
+#define LIEROY_SE3_GAUSSIAN_DISTRIBUTION_H
 
 #include <Eigen/Core>
 
-#include "pylie/se3.hpp"
-#include "pylie/se3_distribution.h"
+#include "lieroy/se3.hpp"
+#include "lieroy/se3_distribution.h"
 
-namespace pylie {
+namespace lieroy {
 template <typename T>
 class SE3GaussianDistribution : public SE3Distribution<T> {
 public:

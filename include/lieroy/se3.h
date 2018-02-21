@@ -1,5 +1,5 @@
-#ifndef PYLIE_SE3_H
-#define PYLIE_SE3_H
+#ifndef LIEROY_SE3_H
+#define LIEROY_SE3_H
 
 #include <array>
 #include <utility>
@@ -10,7 +10,7 @@
 #include "so3.hpp"
 #include "algebra_se3.hpp"
 
-namespace pylie {
+namespace lieroy {
     template<class T>
     class SE3 {
         const T SMALL_ANGLE_THRESHOLD = 1e-2;

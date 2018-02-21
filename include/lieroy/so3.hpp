@@ -1,14 +1,14 @@
-#ifndef PYLIE_SO3_HPP
-#define PYLIE_SO3_HPP
+#ifndef LIEROY_SO3_HPP
+#define LIEROY_SO3_HPP
 
 #include <cmath>
 
 #include <Eigen/Geometry>
 #include <Eigen/Eigenvalues>
 
-#include "pylie/so3.h"
+#include "lieroy/so3.h"
 
-namespace pylie {
+namespace lieroy {
     template <class T>
     SO3<T>::SO3() :
         matrix() {

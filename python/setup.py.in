@@ -10,5 +10,5 @@ setup(name='lieroy',
       url='https://github.com/davidlandry93/lieroy',
       packages=['lieroy'],
       package_dir={'lieroy': 'lieroy'},
-      package_data={'lieroy': ['lieroy.so']},
+      package_data={'lieroy': ['lieroy_core.so']},
       zip_safe=False)

@@ -1,13 +1,13 @@
-#ifndef PYLIE_ALGEBRA_SE3_HPP
-#define PYLIE_ALGEBRA_SE3_HPP
+#ifndef LIEROY_ALGEBRA_SE3_HPP
+#define LIEROY_ALGEBRA_SE3_HPP
 
 #include <chrono>
 #include <random>
 
-#include "pylie/algebra_se3.h"
-#include "pylie/normal_random_variable.hpp"
+#include "lieroy/algebra_se3.h"
+#include "lieroy/normal_random_variable.hpp"
 
-namespace pylie {
+namespace lieroy {
   template <class T>
   AlgebraSE3<T>::AlgebraSE3() :
     vector() {}

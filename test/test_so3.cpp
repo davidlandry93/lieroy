@@ -4,9 +4,9 @@
 #include <Eigen/Core>
 #include <gtest/gtest.h>
 
-#include "pylie/so3.hpp"
+#include "lieroy/so3.hpp"
 
-namespace pylie {
+namespace lieroy {
 
 TEST(SO3, LogMapZeroAngleTest) {
   AlgebraSO3<float> lie(0, 0, 0);

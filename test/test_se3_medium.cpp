@@ -3,9 +3,9 @@
 
 #include <gtest/gtest.h>
 
-#include "pylie/se3.hpp"
+#include "lieroy/se3.hpp"
 
-using namespace pylie;
+using namespace lieroy;
 
 void test_cycle_consistency(double min_angle, double max_angle, int nb_sample) {
     const double step_angle = (max_angle - min_angle) / (double)nb_sample;

@@ -2,11 +2,11 @@
 
 #include <gtest/gtest.h>
 
-#include "pylie/normal_random_variable.hpp"
-#include "pylie/se3.hpp"
-#include "pylie/se3_gaussian_distribution.hpp"
+#include "lieroy/normal_random_variable.hpp"
+#include "lieroy/se3.hpp"
+#include "lieroy/se3_gaussian_distribution.hpp"
 
-using namespace pylie;
+using namespace lieroy;
 
 TEST(DistributionFromSample, PureTranslation) {
     Eigen::Matrix3d covariance;

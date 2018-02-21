@@ -1,13 +1,13 @@
-#ifndef PYLIE_SO3_H
-#define PYLIE_SO3_H
+#ifndef LIEROY_SO3_H
+#define LIEROY_SO3_H
 
 #include <array>
 
 #include <Eigen/Core>
 
-#include "pylie/algebra_so3.hpp"
+#include "lieroy/algebra_so3.hpp"
 
-namespace pylie {
+namespace lieroy {
     template <class T>
     class SO3 {
         const T SMALL_ANGLE_THRESHOLD = 1e-2;

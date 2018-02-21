@@ -13,7 +13,7 @@ find_package(Boost 1.63 COMPONENTS python${PYTHON_COMPONENTS_SUFFIX} numpy${PYTH
 find_package(Eigen3 REQUIRED)
 find_package(PythonLibs)
 
-add_library(lieroy_bindings SHARED lieroy/lieroy.cpp)
+add_library(lieroy_bindings SHARED lieroy/lieroy_core.cpp)
 target_include_directories(lieroy_bindings PRIVATE
   ${Boost_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIRS}
@@ -21,14 +21,26 @@ target_include_directories(lieroy_bindings PRIVATE
 target_link_libraries(lieroy_bindings lieroy ${Boost_LIBRARIES})
 set_target_properties(lieroy_bindings PROPERTIES
   LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lieroy
-  OUTPUT_NAME "lieroy"
+  OUTPUT_NAME "lieroy_core"
   PREFIX ""
   SUFFIX ".so")
 
-add_custom_command(TARGET lieroy_bindings PRE_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy
-  ${CMAKE_CURRENT_SOURCE_DIR}/lieroy/__init__.py
-  ${CMAKE_CURRENT_BINARY_DIR}/lieroy/__init__.py)
+
+# Copy the python files to the build tree where the actual python package is installed from.
+file(GLOB PY_SOURCE_FILES
+  RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/lieroy
+  "lieroy/*.py")
+
+message(STATUS ${PY_SOURCE_FILES})
+message(STATUS ${CMAKE_CURRENT_SOURCE_DIR}/lieroy)
+foreach(PY_FILE ${PY_SOURCE_FILES})
+  message(STATUS ${PY_FILE})
+  add_custom_command(TARGET lieroy_bindings POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    ${CMAKE_CURRENT_SOURCE_DIR}/lieroy/${PY_FILE}
+    ${CMAKE_CURRENT_BINARY_DIR}/lieroy/${PY_FILE})
+endforeach(PY_FILE)
+
 
 set(SETUP_FILE ${CMAKE_CURRENT_BINARY_DIR}/setup.py)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in ${SETUP_FILE})
@@ -38,7 +50,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in ${SETUP_FILE})
 find_program(PIP "pip")
 
 if(PIP)
-  set(PYTHON_BINDINGS_INSTALLATION_COMMAND  ${PIP} install -I .)
+  set(PYTHON_BINDINGS_INSTALLATION_COMMAND  ${PIP} install --ignore-installed .)
 
   # Install the package at install time.
   install(CODE "execute_process(COMMAND ${PYTHON_BINDINGS_INSTALLATION_COMMAND} WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})")

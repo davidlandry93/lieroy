@@ -1,8 +1,8 @@
 
-from pylie.pylie_core import se3_log, se3_exp
+import lieroy.lieroy_core as core
 
 def log(T):
-    return se3_log(T)
+    return core.se3_log(T)
 
 def exp(xsi):
-    return se3_exp(T)
+    return core.se3_exp(T)

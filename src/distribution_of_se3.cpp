@@ -5,11 +5,11 @@
 #include "json.hpp"
 #include "util.hpp"
 
-#include "pylie/se3.hpp"
-#include "pylie/se3_gaussian_distribution.hpp"
+#include "lieroy/se3.hpp"
+#include "lieroy/se3_gaussian_distribution.hpp"
 
 using json = nlohmann::json;
-using namespace pylie;
+using namespace lieroy;
 
 int main(int argc, char** argv) {
   json input;

@@ -1,5 +1,5 @@
-#ifndef PYLIE_NORMAL_RANDOM_VARIABLE_H
-#define PYLIE_NORMAL_RANDOM_VARIABLE_H
+#ifndef LIEROY_NORMAL_RANDOM_VARIABLE_H
+#define LIEROY_NORMAL_RANDOM_VARIABLE_H
 
 #include <iostream>
 #include <random>
@@ -7,7 +7,7 @@
 #include <Eigen/Core>
 #include <Eigen/Eigenvalues>
 
-namespace pylie {
+namespace lieroy {
 
     // http://stackoverflow.com/questions/6142576/sample-from-multivariate-normal-gaussian-distribution-in-c
     template <typename T, int N>

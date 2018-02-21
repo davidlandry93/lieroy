@@ -1,11 +1,11 @@
-#ifndef PYLIE_SE3_DISTRIBUTION_H
-#define PYLIE_SE3_DISTRIBUTION_H
+#ifndef LIEROY_SE3_DISTRIBUTION_H
+#define LIEROY_SE3_DISTRIBUTION_H
 
 #include <memory>
 
-#include "pylie/se3.hpp"
+#include "lieroy/se3.hpp"
 
-namespace pylie {
+namespace lieroy {
   template<typename T>
   class SE3Distribution {
   public:

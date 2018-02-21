@@ -5,8 +5,8 @@
 
 #include <Eigen/Core>
 
-#include "pylie/se3.hpp"
-#include "pylie/se3_distribution.h"
+#include "lieroy/se3.hpp"
+#include "lieroy/se3_distribution.h"
 
 namespace lie {
   template <typename T>

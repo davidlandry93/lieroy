@@ -1,11 +1,11 @@
-#ifndef PYLIE_UTIL_HPP
-#define PYLIE_UTIL_HPP
+#ifndef LIEROY_UTIL_HPP
+#define LIEROY_UTIL_HPP
 
 #include "util.h"
 
 using json = nlohmann::json;
 
-namespace pylie {
+namespace lieroy {
   template <typename T>
   SE3<T> read_json_transform(const json& input) {
     Eigen::Matrix<T, 4, 4> m;
