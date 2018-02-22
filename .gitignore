@@ -32,3 +32,4 @@
 *.app
 
 build
+__pycache__

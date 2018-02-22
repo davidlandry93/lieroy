@@ -1,0 +1,9 @@
+---
+Language:        Cpp
+BasedOnStyle:  Google
+AccessModifierOffset: -2
+IndentWidth: 4
+DerivePointerAlignment: false
+PointerAlignment: Left
+...
+
