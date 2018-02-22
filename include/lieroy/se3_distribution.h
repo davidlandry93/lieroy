@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "lieroy/algebra_se3.hpp"
 #include "lieroy/se3.hpp"
 
 namespace lieroy {

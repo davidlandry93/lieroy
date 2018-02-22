@@ -9,9 +9,11 @@ else(USE_PYTHON3)
   set(PYTHON_COMPONENTS_SUFFIX "")
 endif(USE_PYTHON3)
 
-find_package(Boost 1.63 COMPONENTS python${PYTHON_COMPONENTS_SUFFIX} numpy${PYTHON_COMPONENTS_SUFFIX})
+find_package(Boost 1.63 COMPONENTS python${PYTHON_COMPONENTS_SUFFIX} numpy${PYTHON_COMPONENTS_SUFFIX} REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(PythonLibs)
+
+message(STATUS ${Boost_INCLUDE_DIRS})
 
 add_library(lieroy_bindings SHARED lieroy/lieroy_core.cpp)
 target_include_directories(lieroy_bindings PRIVATE
@@ -31,12 +33,9 @@ file(GLOB PY_SOURCE_FILES
   RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/lieroy
   "lieroy/*.py")
 
-message(STATUS ${PY_SOURCE_FILES})
-message(STATUS ${CMAKE_CURRENT_SOURCE_DIR}/lieroy)
 foreach(PY_FILE ${PY_SOURCE_FILES})
-  message(STATUS ${PY_FILE})
   add_custom_command(TARGET lieroy_bindings POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
+    COMMAND ${CMAKE_COMMAND} -E create_symlink
     ${CMAKE_CURRENT_SOURCE_DIR}/lieroy/${PY_FILE}
     ${CMAKE_CURRENT_BINARY_DIR}/lieroy/${PY_FILE})
 endforeach(PY_FILE)

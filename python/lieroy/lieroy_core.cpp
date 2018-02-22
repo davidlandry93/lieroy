@@ -11,6 +11,8 @@
 #include "lieroy/se3.hpp"
 #include "lieroy/se3_gaussian_distribution.hpp"
 
+using namespace lieroy;
+
 namespace p = boost::python;
 namespace np = boost::python::numpy;
 
@@ -123,6 +125,28 @@ p::tuple se3_gaussian_distribution_of_sample(const np::ndarray& m) {
                        eigen_matrix_to_ndarray(distribution.covariance));
 }
 
+
+template <typename T>
+p::list se3_sample_normal_distribution(const np::ndarray& mean, const np::ndarray& covariance, const int& n_samples) {
+    auto eigen_mean = ndarray_to_eigen_matrix<T, 4, 4>(mean);
+    auto eigen_covariance = ndarray_to_eigen_matrix<T, 6, 6>(covariance);
+    auto distribution = SE3GaussianDistribution<T>(eigen_mean, eigen_covariance);
+
+    p::list python_samples;
+
+    for(auto i = 0; i < n_samples; i++) {
+        SE3<T> perturbated, perturbation;
+        std::tie(perturbated, perturbation) = distribution.sample_with_perturbation();
+
+        python_samples.append(eigen_matrix_to_ndarray(perturbated.as_matrix()));
+    }
+
+    return python_samples;
+}
+
+
+
+
 BOOST_PYTHON_MODULE(lieroy_core) {
   np::initialize();
 
@@ -131,4 +155,5 @@ BOOST_PYTHON_MODULE(lieroy_core) {
   p::def("se3_exp", se3_exp<double>, "Compute the Lie Group counterpart of a member of the Lie algebra of SE3. Takes a 6-vector as input.");
   p::def("se3_exp", se3_exp<float>,  "Compute the Lie Group counterpart of a member of the Lie algebra of SE3. Takes a 6-vector as input.");
   p::def("se3_gaussian_distribution_of_sample", se3_gaussian_distribution_of_sample<double>, "Compute a gaussian distribution from a collection of SE3 transforms");
+  p::def("se3_sample_normal_distribution", se3_sample_normal_distribution<double>, "Create a collection of SE3 sampled from a normal distribution.");
 }
