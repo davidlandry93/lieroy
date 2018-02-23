@@ -16,7 +16,6 @@ class SE3UniformDistribution : public SE3Distribution<T> {
     SE3UniformDistribution(const SE3<T>& mean, const T& translation_radius, const T& rotation_radius);
     std::unique_ptr<SE3Distribution<T>> copy() const override;
     std::tuple<SE3<T>, SE3<T>> sample_with_perturbation() const;
-    static Eigen::Matrix<T, 3, 1> sample_from_sphere(T radius);
 
   private:
     SE3<T> mean;

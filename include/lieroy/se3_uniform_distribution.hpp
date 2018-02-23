@@ -5,8 +5,9 @@
 #include <random>
 
 #include "algebra_se3.hpp"
-
 #include "se3_uniform_distribution.h"
+#include "so3_uniform_distribution.hpp"
+#include "util.hpp"
 
 namespace lieroy {
 template <typename T>
@@ -30,28 +31,10 @@ std::unique_ptr<SE3Distribution<T>> SE3UniformDistribution<T>::copy() const {
 }
 
 template <typename T>
-Eigen::Matrix<T, 3, 1> SE3UniformDistribution<T>::sample_from_sphere(T radius) {
-    static std::mt19937 gen{std::random_device{}()};
-    static std::normal_distribution<T> normal_distribution;
-    static std::uniform_real_distribution<T> uniform_dist(0.0, radius);
-
-    Eigen::Matrix<T, 3, 1> p;
-
-    for (auto i = 0; i < 3; i++) {
-        p(i) = normal_distribution(gen);
-    }
-
-    double r = cbrt(uniform_dist(gen));
-    p = r * p / p.norm();
-
-    return p;
-}
-
-template <typename T>
 std::tuple<SE3<T>, SE3<T>> SE3UniformDistribution<T>::sample_with_perturbation()
     const {
-    auto translation_sample = sample_from_sphere(translation_radius);
-    auto rotation_sample = sample_from_sphere(rotation_radius);
+    auto translation_sample = sample_uniform_from_sphere<T>(translation_radius);
+    auto rotation_sample = sample_uniform_from_sphere<T>(rotation_radius);
 
     auto lie_vector = AlgebraSE3<T>(translation_sample, rotation_sample);
 

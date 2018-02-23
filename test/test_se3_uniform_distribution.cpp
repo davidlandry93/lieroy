@@ -10,13 +10,6 @@
 using namespace lieroy;
 using namespace std;
 
-TEST(SE3UniformDistribution, SampleFromSphere) {
-    SE3UniformDistribution<float> distribution(1.0, 1.0);
-
-    auto sample = distribution.sample_from_sphere(1.0);
-    std::cout << sample << std::endl;
-}
-
 TEST(SE3UniformDistribution, ZeroRadiusReturnTheMean) {
     std::array<float, 6> v{{1, 2, 3, 0.1, 0.2, 0.3}};
     AlgebraSE3<float> aMean(v);
@@ -68,13 +61,16 @@ TEST(SE3UniformDistribution, PureTranslationSampling) {
 TEST(SE3UniformDistribution, PureRotationSampling) {
     SE3UniformDistribution<float> distribution(SE3<float>::identity(), 0.0, 1.0);
 
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 10; i++) {
         auto sample = distribution.sample();
 
-        std::cout << sample;
+        std::cout << sample << std::endl;
 
         for(auto j = 0; j < 3; j++) {
+            std::cout << j << " ";
             ASSERT_FLOAT_EQ(0.0, sample.as_matrix()(i,3));
         }
+
+        std::cout << std::endl;
     }
 }
