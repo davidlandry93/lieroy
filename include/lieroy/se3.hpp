@@ -144,11 +144,13 @@ namespace lieroy {
     template <class T>
     SE3<T>& SE3<T>::operator=(const SE3<T>& rhs) {
         matrix = rhs.matrix;
+        return *this;
     }
 
     template <class T>
     SE3<T>& SE3<T>::operator=(SE3<T>&& rhs) {
         matrix = rhs.matrix;
+        return *this;
     }
 
     template <class T>
