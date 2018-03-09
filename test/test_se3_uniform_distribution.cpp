@@ -64,13 +64,8 @@ TEST(SE3UniformDistribution, PureRotationSampling) {
     for (int i = 0; i < 10; i++) {
         auto sample = distribution.sample();
 
-        std::cout << sample << std::endl;
-
         for(auto j = 0; j < 3; j++) {
-            std::cout << j << " ";
-            ASSERT_FLOAT_EQ(0.0, sample.as_matrix()(i,3));
+            ASSERT_FLOAT_EQ(0.0, sample.as_matrix()(j,3));
         }
-
-        std::cout << std::endl;
     }
 }

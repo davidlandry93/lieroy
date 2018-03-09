@@ -22,6 +22,8 @@ namespace lieroy {
         SO3<T> exp() const;
         SO3<T> exp_rodrigues() const;
 
+        AlgebraSO3<T>& operator=(const AlgebraSO3<T>& other);
+
     private:
         Eigen::Matrix<T,3,1> vector;
     };

@@ -5,6 +5,7 @@
 #include <gtest/gtest.h>
 
 #include "lieroy/so3.hpp"
+#include "lieroy/so3_uniform_distribution.hpp"
 
 namespace lieroy {
 
@@ -68,4 +69,27 @@ TEST(SO3, CloseToPiOr2Pi) {
   SO3<float> rotation(m);
   ASSERT_NO_THROW(rotation.log());
 }
+
+TEST(SO3, Orthogonal) {
+    SO3UniformDistribution<double> dist(10.0);
+
+    for(auto k = 0; k < 1000; ++k) {
+        SO3<double> sample = dist.sample();
+
+        auto sample_matrix = sample.as_matrix();
+
+        std::cout << sample_matrix << '\n';
+        sample_matrix *= sample_matrix.transpose();
+        auto identity = Eigen::Matrix<float,3,3>::Identity();
+
+        std::cout << sample_matrix;
+
+        for(auto i = 0; i < 3; i++) {
+            for(auto j = 0; j < 3; j++) {
+                ASSERT_DOUBLE_EQ(sample_matrix(i,j), identity(i,j));
+            }
+        }
+    }
+}
+
 }
