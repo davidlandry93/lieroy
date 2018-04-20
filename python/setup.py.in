@@ -11,4 +11,9 @@ setup(name='lieroy',
       packages=['lieroy'],
       package_dir={'lieroy': 'lieroy'},
       package_data={'lieroy': ['lieroy_core.so']},
+      entry_points = {
+          'console_scripts': [
+              'json_se3_log = lieroy.se3:log_cli'
+          ]
+      },
       zip_safe=False)

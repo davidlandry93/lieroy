@@ -39,6 +39,8 @@ namespace lieroy {
                           T iso_covariance_rot) const;
         SE3<T> perturbate(const Eigen::Matrix<T,6,6>& covariance) const;
 
+        Eigen::Matrix<T,6,6> adjoint() const;
+
         T& operator()(int i, int j);
         const T& operator()(int i, int j) const;
         SE3<T>& operator*=(const SE3<T>& rhs);

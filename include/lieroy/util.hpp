@@ -24,4 +24,21 @@ Eigen::Matrix<T, 3, 1> sample_uniform_from_sphere(T distribution_radius) {
     return sample;
 }
 
+
+template <typename T>
+static Eigen::Matrix<T, 3, 3> skew_sym(const Eigen::Matrix<T,3,1>& v) {
+    Eigen::Matrix<T,3,3> skew_sym_m = Eigen::Matrix<T,3,3>::Zero();
+
+    skew_sym_m(0,1) = -v(2);
+    skew_sym_m(1,0) = v(2);
+
+    skew_sym_m(0,2) = v(1);
+    skew_sym_m(2,0) = -v(1);
+
+    skew_sym_m(1,2) = -v(0);
+    skew_sym_m(2,1) = v(0);
+
+    return skew_sym_m;
+}
+
 #endif

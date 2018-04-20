@@ -130,6 +130,11 @@ SO3<T> SO3<T>::from_rpy(T roll, T pitch, T yaw) {
     return SO3<T>(transform.rotation().matrix());
 }
 
+template <class T>
+Eigen::Matrix<T,3,3> SO3<T>::adjoint() const {
+    return matrix;
+}
+
 
 template <class T>
 SO3<T>& SO3<T>::operator=(const SO3<T>& rhs) {

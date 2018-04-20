@@ -10,7 +10,7 @@ option(BUILD_TESTS "Build tests" ON)
 
 
 add_library(lieroy INTERFACE)
-target_include_directories(lieroy INTERFACE
+target_include_directories(lieroy BEFORE INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
   ${EIGEN3_INCLUDE_DIR})

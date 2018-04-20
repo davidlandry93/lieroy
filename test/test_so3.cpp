@@ -78,6 +78,8 @@ TEST(SO3, Orthogonal) {
 
         auto sample_matrix = sample.as_matrix();
 
+        std::cout << "Det: " << sample_matrix.determinant() << '\n';
+
         std::cout << sample_matrix << '\n';
         sample_matrix *= sample_matrix.transpose();
         auto identity = Eigen::Matrix<float,3,3>::Identity();
@@ -91,5 +93,7 @@ TEST(SO3, Orthogonal) {
         }
     }
 }
+
+
 
 }

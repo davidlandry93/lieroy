@@ -22,6 +22,8 @@ namespace lieroy {
         Eigen::Matrix<T,3,3> as_matrix() const;
         static SO3<T> from_rpy(T roll, T pitch, T yaw);
 
+        Eigen::Matrix<T,3,3> adjoint() const;
+
         SO3<T>& operator=(const SO3<T>& rhs);
         SO3<T>& operator=(SO3<T>&& rhs);
         SO3<T>& operator*(const SO3<T>& rhs);

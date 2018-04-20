@@ -162,6 +162,16 @@ p::list se3_sample_uniform_distribution(const np::ndarray& mean, const T& range_
     return samples;
 }
 
+template <typename T>
+np::ndarray se3_adjoint(const np::ndarray& t) {
+    auto eigen_t = ndarray_to_eigen_matrix<T,4,4>(t);
+    SE3<double> se3_t(eigen_t);
+
+    Eigen::Matrix<T,6,6> adjoint = se3_t.adjoint();
+
+    return eigen_matrix_to_ndarray(adjoint);
+}
+
 
 BOOST_PYTHON_MODULE(lieroy_core) {
   np::initialize();
@@ -173,4 +183,5 @@ BOOST_PYTHON_MODULE(lieroy_core) {
   p::def("se3_gaussian_distribution_of_sample", se3_gaussian_distribution_of_sample<double>, "Compute a gaussian distribution from a collection of SE3 transforms");
   p::def("se3_sample_normal_distribution", se3_sample_normal_distribution<double>, "Create a collection of SE3 sampled from a normal distribution.");
   p::def("se3_sample_uniform_distribution", se3_sample_uniform_distribution<double>, "Create a collection of SE3 sampled from a uniform distribution.");
+  p::def("se3_adjoint", se3_adjoint<double>, "Compute the adjoint representation of a SE3 group element.");
 }
