@@ -60,7 +60,6 @@ SE3GaussianDistribution<T> SE3GaussianDistribution<T>::from_sample(
 
         auto inv_of_mean = mean_transformation.inv();
 
-#pragma omp parallel for schedule(dynamic, 32)
         for (auto i = 0; i < sample.size(); i++) {
             SE3<T> product = sample[i] * inv_of_mean;
 

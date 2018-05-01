@@ -9,3 +9,6 @@ class FunctionWrapper():
     def __call__(self, *args, **kwargs):
         module = importlib.import_module(self.module_name)
         return module.__dict__[self.function_name](*args, *kwargs)
+
+se3_log = FunctionWrapper('log', 'lieroy.se3')
+se3_exp = FunctionWrapper('exp', 'lieroy.se3')

@@ -25,3 +25,7 @@ def log_cli():
     xsi = log(T)
 
     json.dump(xsi.tolist(), sys.stdout)
+
+
+def gaussian_from_sample(sample):
+    return core.se3_gaussian_distribution_of_sample(sample)
