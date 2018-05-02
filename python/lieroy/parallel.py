@@ -12,3 +12,4 @@ class FunctionWrapper():
 
 se3_log = FunctionWrapper('log', 'lieroy.se3')
 se3_exp = FunctionWrapper('exp', 'lieroy.se3')
+se3_gaussian_distribution_of_sample = FunctionWrapper('gaussian_from_sample', 'lieroy.se3')
