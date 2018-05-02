@@ -11,12 +11,15 @@ endif(USE_PYTHON3)
 
 find_package(Boost 1.63 COMPONENTS python${PYTHON_COMPONENTS_SUFFIX} numpy${PYTHON_COMPONENTS_SUFFIX} REQUIRED)
 find_package(Eigen3 REQUIRED)
-find_package(PythonLibs)
+
+set(Python_ADDITIONAL_VERSIONS 3.5)
+find_package(PythonLibs 3)
 
 message(STATUS ${Boost_INCLUDE_DIRS})
 
 add_library(lieroy_bindings SHARED lieroy/lieroy_core.cpp)
 target_include_directories(lieroy_bindings PRIVATE
+  ${PYTHON_INCLUDE_OVERRIDE}
   ${Boost_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIRS}
   ${PYTHON_INCLUDE_DIRS})
