@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.5)
 
 project(lieroy VERSION 0.1)
 
@@ -14,8 +14,9 @@ target_include_directories(lieroy BEFORE INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
   ${EIGEN3_INCLUDE_DIR})
+
 # Even though it is header only, lieroy still requires the consumer to use a c++11 compiler.
-target_compile_features(lieroy INTERFACE cxx_std_11)
+target_compile_features(lieroy INTERFACE cxx_auto_type cxx_range_for cxx_rvalue_references)
 
 if(OpenMP_FOUND)
   target_compile_options(lieroy INTERFACE ${OpenMP_CXX_FLAGS})
