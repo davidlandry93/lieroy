@@ -5,7 +5,7 @@ project(lieroy VERSION 0.1)
 find_package(Eigen3 REQUIRED)
 find_package(OpenMP)
 
-option(BUILD_PYTHON_BINDINGS "Build Python bindings" ON)
+option(BUILD_PYTHON_BINDINGS "Build Python bindings" OFF)
 option(BUILD_TESTS "Build tests" ON)
 
 
