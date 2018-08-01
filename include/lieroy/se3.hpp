@@ -13,46 +13,69 @@
 
 namespace lieroy {
 template <class T>
-SE3<T>::SE3() : matrix() {
-    matrix.setIdentity();
-}
+SE3<T>::SE3() : values {
+    1.0, 0.0, 0.0, 0.0,
+    0.0, 1.0, 0.0, 0.0,
+    0.0, 0.0, 1.0, 0.0,
+    0.0, 0.0, 0.0, 1.0} {}
 
 template <class T>
-SE3<T>::SE3(const std::array<T, 16>& values) : matrix() {
+SE3<T>::SE3(const std::array<T, 16>& p_values) : values{} {
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            matrix(i, j) = values[i * 4 + j];
+            values[i][j] = p_values[i * 4 + j];
         }
     }
 }
 
 template <class T>
-SE3<T>::SE3(const Eigen::Matrix<T, 4, 4>& m) : matrix(m) {}
+SE3<T>::SE3(const Eigen::Matrix<T, 4, 4>& m) : values{} {
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            values[i][j] = m(i,j);
+        }
+    }
+}
 
 template <class T>
-SE3<T>::SE3(const SE3<T>& other) : matrix(other.matrix) {}
+SE3<T>::SE3(const SE3<T>& other) : values{} {
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            values[i][j] = other.values[i][j];
+        }
+    }
+}
 
 template <class T>
-SE3<T>::SE3(const Eigen::Matrix<T, 3, 1>& translation, const SO3<T>& rotation)
-    : matrix() {
-    matrix.setIdentity();
-    matrix.block(0, 0, 3, 3) = rotation.as_matrix();
-    matrix.block(0, 3, 3, 1) = translation;
+SE3<T>::SE3(const Eigen::Matrix<T, 3, 1>& translation, const SO3<T>& p_rotation)
+        : values{
+        1.0, 0.0, 0.0, 0.0,
+        0.0, 1.0, 0.0, 0.0,
+        0.0, 0.0, 1.0, 0.0,
+        0.0, 0.0, 0.0, 1.0} {
+
+    for(auto i = 0; i < 3; ++i) {
+        for(auto j = 0; j < 3; ++j) {
+            values[i][j] = p_rotation.as_matrix()(i,j);
+        }
+
+        values[i][3] = translation(i);
+    }
 }
 
 template <class T>
 T& SE3<T>::operator()(int i, int j) {
-    return matrix(i, j);
+    return values[i][j];
 }
 
 template <class T>
 const T& SE3<T>::operator()(int i, int j) const {
-    return matrix(i, j);
+    return values[i][j];
 }
 
 template <class T>
 void SE3<T>::stream_to(std::ostream& os) const {
-    os << matrix;
+    os << as_matrix();
 }
 
 template <class T>
@@ -63,12 +86,13 @@ inline std::ostream& operator<<(std::ostream& os, const SE3<T>& t) {
 
 template <class T>
 SO3<T> SE3<T>::rotation_part() const {
-    return SO3<T>(matrix.block(0, 0, 3, 3));
+    auto m = as_matrix();
+    return SO3<T>(m.block(0, 0, 3, 3));
 }
 
 template <class T>
 AlgebraSE3<T> SE3<T>::log() const {
-    SO3<T> rotation(rotation_part());
+    SO3<T> rotation = rotation_part();
     AlgebraSO3<T> omega = rotation.log();
 
     T theta = sqrt(omega.as_vector().transpose() * omega.as_vector());
@@ -95,7 +119,7 @@ AlgebraSE3<T> SE3<T>::log() const {
 
 template <class T>
 Eigen::Matrix<T, 3, 1> SE3<T>::translation_part() const {
-    return matrix.block(0, 3, 3, 1);
+    return as_matrix().block(0, 3, 3, 1);
 }
 
 template <class T>
@@ -119,7 +143,7 @@ SE3<T> SE3<T>::perturbate(const Eigen::Matrix<T, 6, 6>& covariance) const {
 template <class T>
 Eigen::Matrix<T, 6, 6> SE3<T>::adjoint() const {
     Eigen::Matrix<T,6,6> adjoint = Eigen::Matrix<T,6,6>::Zero();
-    Eigen::Matrix<T,3,3> rotation = matrix.block(0,0,3,3);
+    Eigen::Matrix<T,3,3> rotation = rotation_part().as_matrix();
     adjoint.block(0,0,3,3) = rotation;
     adjoint.block(3,3,3,3) = rotation;
 
@@ -137,7 +161,7 @@ SE3<T> SE3<T>::inv() const {
     Eigen::Matrix<T, 3, 3> rotation_matrix = rotation_part().as_matrix();
     inverse.block(0, 0, 3, 3) = rotation_matrix.transpose();
 
-    Eigen::Matrix<T, 3, 1> t = matrix.block(0, 3, 3, 1);
+    Eigen::Matrix<T, 3, 1> t = translation_part();
     inverse.block(0, 3, 3, 1) = -rotation_matrix.transpose() * t;
 
     return SE3<T>(inverse);
@@ -145,33 +169,57 @@ SE3<T> SE3<T>::inv() const {
 
 template <class T>
 SE3<T>& SE3<T>::operator*=(const SE3<T>& rhs) {
-    matrix = matrix * rhs.matrix;
+    auto m = as_matrix() * rhs.as_matrix();
+
+    for(auto i = 0; i < 4; ++i) {
+        for(auto j = 0; j < 4; ++j) {
+            values[i][j] = m(i,j);
+        }
+    }
+
     return *this;
 }
 
 template <class T>
 SE3<T>& SE3<T>::operator=(const SE3<T>& rhs) {
-    matrix = rhs.matrix;
+    for(auto i = 0; i < 4; ++i) {
+        for(auto j = 0; j < 4; ++j) {
+            values[i][j] = rhs.values[i][j];
+        }
+    }
     return *this;
 }
 
 template <class T>
 SE3<T>& SE3<T>::operator=(SE3<T>&& rhs) {
-    matrix = rhs.matrix;
+    for(auto i = 0; i < 4; ++i) {
+        for(auto j = 0; j < 4; ++j) {
+            values[i][j] = rhs.values[i][j];
+        }
+    }
     return *this;
 }
 
 template <class T>
 Eigen::Matrix<T, 4, 4> SE3<T>::as_matrix() const {
-    return matrix;
+    Eigen::Matrix<T,4,4> m;
+
+    for(auto i = 0; i < 4; ++i) {
+        for(auto j = 0; j < 4; ++j) {
+            m(i,j) = values[i][j];
+        }
+    }
+
+    return m;
 }
 
 template <class T>
 Eigen::Transform<T, 3, Eigen::Affine> SE3<T>::as_transform() const {
     Eigen::Transform<T, 3, Eigen::Affine, Eigen::ColMajor> t;
-    t.matrix() = matrix;
+    t.matrix() = as_matrix();
     return t;
 }
+
 }
 
 #endif

@@ -6,20 +6,18 @@
 #include <vector>
 
 #include <Eigen/Core>
-#inlcude <Eigen/StdVector>
+#include <Eigen/StdVector>
 
 #include "so3.hpp"
 #include "algebra_se3.hpp"
 
 namespace lieroy {
 
-typedef std::vector<lieroy::SE3<double>, Eigen::aligned_allocator<lieroy::SE3<double>>> SE3Vector;
 
     template<class T>
     class SE3 {
         const T SMALL_ANGLE_THRESHOLD = 1e-2;
     public:
-        EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         typedef Eigen::Matrix<T, 6, 6> Covariance;
 
         SE3();
@@ -33,8 +31,6 @@ typedef std::vector<lieroy::SE3<double>, Eigen::aligned_allocator<lieroy::SE3<do
         }
 
         Eigen::Matrix<T,4,4> as_matrix() const;
-        Eigen::Transform<T,3,Eigen::Affine> as_transform() const;
-
         SO3<T> rotation_part() const;
         Eigen::Matrix<T,3,1> translation_part() const;
         AlgebraSE3<T> log() const;
@@ -53,9 +49,10 @@ typedef std::vector<lieroy::SE3<double>, Eigen::aligned_allocator<lieroy::SE3<do
         SE3<T>& operator=(const SE3<T>& rhs);
 
         void stream_to(std::ostream& os) const;
+        Eigen::Transform<T, 3, Eigen::Affine> as_transform() const;
 
     private:
-        Eigen::Matrix<T,4,4> matrix;
+        std::array<std::array<T,4>,4> values;
     };
 
     template <typename T>
