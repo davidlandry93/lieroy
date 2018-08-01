@@ -6,15 +6,20 @@
 #include <vector>
 
 #include <Eigen/Core>
+#inlcude <Eigen/StdVector>
 
 #include "so3.hpp"
 #include "algebra_se3.hpp"
 
 namespace lieroy {
+
+typedef std::vector<lieroy::SE3<double>, Eigen::aligned_allocator<lieroy::SE3<double>>> SE3Vector;
+
     template<class T>
     class SE3 {
         const T SMALL_ANGLE_THRESHOLD = 1e-2;
     public:
+        EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         typedef Eigen::Matrix<T, 6, 6> Covariance;
 
         SE3();

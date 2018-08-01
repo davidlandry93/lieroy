@@ -21,6 +21,7 @@ class SE3GaussianDistribution : public SE3Distribution<T> {
     std::unique_ptr<SE3Distribution<T>> copy() const override;
     static SE3GaussianDistribution from_sample(
         const std::vector<SE3<T>>& sample);
+    static SE3GaussianDistribution from_sample(const SE3Vector& sample);
     static SE3GaussianDistribution from_sample(
         const std::vector<SE3<T>>& sample, const std::vector<double>& weights);
     static Eigen::Matrix<T, 6, 6> covariance_rpy_to_lie(
