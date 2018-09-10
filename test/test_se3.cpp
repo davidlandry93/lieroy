@@ -107,5 +107,32 @@ TEST(SE3, PerturbationTest) {
     ASSERT_NEAR(1.0, perturbated.as_matrix().determinant(), 1e-4);
 }
 
+TEST(SE3, CompoundTest) {
+    SE3<double> t1;
+    SE3<double> t2;
+
+    Eigen::Matrix<double,6,6> cov1;
+    Eigen::Matrix<double,6,6> cov2;
+
+    cov1.setIdentity();
+    cov2.setIdentity();
+
+    SE3<double> result_pos;
+    Eigen::Matrix<double,6,6> result_cov;
+    std::tie(result_pos, result_cov) = compound_poses(t1, cov1, t2, cov2);
+
+    std::cout << result_cov << std::endl;
+
+    for(auto i = 0; i < 6; i++) {
+        for(auto j = 0; j < 6; j++) {
+            if(i != j) {
+                ASSERT_FLOAT_EQ(0.0, result_cov(i,j));
+            } else {
+                ASSERT_FLOAT_EQ(2.0, result_cov(i,j));
+            }
+        }
+    }
+}
+
 
 

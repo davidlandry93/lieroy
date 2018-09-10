@@ -49,6 +49,7 @@ namespace lieroy {
 
         void stream_to(std::ostream& os) const;
 
+
     private:
         Eigen::Matrix<T,4,4> matrix;
     };
@@ -57,6 +58,9 @@ namespace lieroy {
     SE3<T> operator*(SE3<T> lhs, const SE3<T>& rhs) {
         return lhs *= rhs;
     }
+
+template <typename T>
+std::pair<SE3<T>, Eigen::Matrix<T,6,6>> compound_poses(const SE3<T>& t1, const Eigen::Matrix<T,6,6>& sigma1, const SE3<T>& t2, const Eigen::Matrix<T,6,6>& sigma2);
 }
 
 #endif

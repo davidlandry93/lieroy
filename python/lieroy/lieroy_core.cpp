@@ -173,6 +173,27 @@ np::ndarray se3_adjoint(const np::ndarray& t) {
 }
 
 
+template <typename T>
+p::tuple combine_poses(const np::ndarray& t1, const np::ndarray& sigma1, const np::ndarray& t2, const np::ndarray& sigma2) {
+    auto t1_eigen = ndarray_to_eigen_matrix<T,4,4>(t1);
+    auto t2_eigen = ndarray_to_eigen_matrix<T,4,4>(t2);
+    SE3<T> t1_group(t1_eigen);
+    SE3<T> t2_group(t2_eigen);
+
+    auto sigma1_eigen = ndarray_to_eigen_matrix<T,6,6>(sigma1);
+    auto sigma2_eigen = ndarray_to_eigen_matrix<T,6,6>(sigma2);
+
+    SE3<T> mean;
+    Eigen::Matrix<T,6,6> covariance;
+    std::tie(mean, covariance) = compound_poses(t1_group, sigma1_eigen, t2_group, sigma2_eigen);
+
+    auto mean_np = eigen_matrix_to_ndarray<T,4,4>(mean.as_matrix());
+    auto covariance_np = eigen_matrix_to_ndarray<T,6,6>(covariance);
+
+    return p::make_tuple(mean_np, covariance_np);
+}
+
+
 BOOST_PYTHON_MODULE(lieroy_core) {
   np::initialize();
 
@@ -184,4 +205,6 @@ BOOST_PYTHON_MODULE(lieroy_core) {
   p::def("se3_sample_normal_distribution", se3_sample_normal_distribution<double>, "Create a collection of SE3 sampled from a normal distribution.");
   p::def("se3_sample_uniform_distribution", se3_sample_uniform_distribution<double>, "Create a collection of SE3 sampled from a uniform distribution.");
   p::def("se3_adjoint", se3_adjoint<double>, "Compute the adjoint representation of a SE3 group element.");
+  p::def("se3_compound_poses", combine_poses<double>, "Combine se3 poses and their uncertainty.");
+  p::def("se3_compound_poses", combine_poses<float>, "Combine se3 poses and their uncertainty.");
 }
