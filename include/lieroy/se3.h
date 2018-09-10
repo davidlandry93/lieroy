@@ -6,11 +6,14 @@
 #include <vector>
 
 #include <Eigen/Core>
+#include <Eigen/StdVector>
 
 #include "so3.hpp"
 #include "algebra_se3.hpp"
 
 namespace lieroy {
+
+
     template<class T>
     class SE3 {
         const T SMALL_ANGLE_THRESHOLD = 1e-2;
@@ -28,8 +31,6 @@ namespace lieroy {
         }
 
         Eigen::Matrix<T,4,4> as_matrix() const;
-        Eigen::Transform<T,3,Eigen::Affine> as_transform() const;
-
         SO3<T> rotation_part() const;
         Eigen::Matrix<T,3,1> translation_part() const;
         AlgebraSE3<T> log() const;
@@ -48,10 +49,11 @@ namespace lieroy {
         SE3<T>& operator=(const SE3<T>& rhs);
 
         void stream_to(std::ostream& os) const;
+        Eigen::Transform<T, 3, Eigen::Affine> as_transform() const;
 
 
     private:
-        Eigen::Matrix<T,4,4> matrix;
+        std::array<std::array<T,4>,4> values;
     };
 
     template <typename T>

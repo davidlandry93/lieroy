@@ -88,7 +88,7 @@ TEST(SO3, Orthogonal) {
 
         for(auto i = 0; i < 3; i++) {
             for(auto j = 0; j < 3; j++) {
-                ASSERT_DOUBLE_EQ(sample_matrix(i,j), identity(i,j));
+                ASSERT_FLOAT_EQ(sample_matrix(i,j), identity(i,j));
             }
         }
     }
